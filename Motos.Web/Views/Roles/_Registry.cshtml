@@ -1,0 +1,33 @@
+﻿@model Motos.Web.Models.Registry
+
+<div class="form-group">
+    <label asp-for="Date" class="control-label">Fecha</label>
+    <input asp-for="Date" class="form-control" />
+    <span asp-validation-for="Date" class="text-danger"></span>
+    <br />
+    <label asp-for="Dni" class="control-label">Cédula</label>
+    <input asp-for="Dni" class="form-control" />
+    <span asp-validation-for="Dni" class="text-danger"></span>
+    <br />
+    <label asp-for="Placa" class="control-label">Placa</label>
+    <input asp-for="Placa" class="form-control" />
+    <span asp-validation-for="Placa" class="text-danger"></span>
+    <br />
+    <label asp-for="Owner" class="control-label">Propietario</label>
+    <input asp-for="Owner" class="form-control" />
+    <span asp-validation-for="Owner" class="text-danger"></span>
+    <br />
+    <label asp-for="Description" class="control-label">Descripción</label>
+    <input asp-for="Description" class="form-control" />
+    <span asp-validation-for="Description" class="text-danger"></span>
+    <br />
+   @* <label asp-for="Total" class="control-label"></label>
+    <input asp-for="Total" class="form-control" />
+    <span asp-validation-for="Total" class="text-danger"></span>
+    <br />*@
+    <label asp-for="Status" class="control-label">¿Activo?</label>
+    <input asp-for="Status" class="form-control" />
+    <span asp-validation-for="Status" class="text-danger"></span>
+    <br />
+    
+</div>

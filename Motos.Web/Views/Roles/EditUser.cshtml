@@ -1,0 +1,28 @@
+﻿@model Motos.Web.Models.User
+@{
+    ViewData["Title"] = "Edit";
+}
+
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.11.5/css/jquery.dataTables.css">
+<link rel="stylesheet" href="~/lib/font-awesome/css/fontawesome.css" />
+<link rel="stylesheet" href="~/lib/Font-Awesome/css/regular.min.css">
+<link rel="stylesheet" href="~/lib/Font-Awesome/css/solid.min.css">
+
+<br />
+<h4><i class="fa-solid fa-pen"></i> Edición de Usuario</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="EditUser">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div> <input type="hidden" asp-for="Id" /> <input type="hidden" asp-for="IdRol" />
+            <partial name="_User" />
+            <div class="form-group"> <input type="submit" value="Guardar" class="btn btn-success" /> <a asp-action="Details" asp-route-id="@Model.IdRol" class="btn btn-secondary"><i class="fa-solid fa-arrow-left"></i> Atrás</a>
+        </form>
+    </div>
+</div>
+@section Scripts {
+ @{
+    await Html.RenderPartialAsync("_ValidationScriptsPartial");
+}
+ }

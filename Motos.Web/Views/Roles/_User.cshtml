@@ -1,0 +1,19 @@
+﻿@model Motos.Web.Models.User
+@*@model Motos.Web.Models.UserViewModel*@
+
+<div class="form-group">
+    <label asp-for="Name" class="control-label">Nombre</label>
+    <input asp-for="Name" class="form-control" />
+    <span asp-validation-for="Name" class="text-danger"></span>
+    <br />
+    <label asp-for="Dni" class="control-label">Cédula</label>
+    <input asp-for="Dni" type="number" class="form-control" />
+    <span asp-validation-for="Dni" class="text-danger"></span>
+    <br />
+    <label asp-for="Status" class="control-label">¿Activo?</label>
+    <input type="checkbox" asp-for="Status" class="form-control"> 
+    @*<input asp-for="Status" class="form-control" />*@
+    <span asp-validation-for="Status" class="text-danger"></span>
+    <br />
+
+</div>

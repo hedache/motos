@@ -1,0 +1,77 @@
+﻿@model Motos.Web.Models.Role
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+@*<h1>Details</h1>*@
+<br />
+
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.11.5/css/jquery.dataTables.css">
+<link rel="stylesheet" href="~/lib/font-awesome/css/fontawesome.css" />
+<link rel="stylesheet" href="~/lib/Font-Awesome/css/regular.min.css">
+<link rel="stylesheet" href="~/lib/Font-Awesome/css/solid.min.css">
+<br />
+
+
+<div>
+<h4><i class="fa-regular fa-info"></i> Detalle de Rol</h4>
+
+<hr />
+<dl>
+        <dt> Nombre </dt>
+        <dd> @Html.DisplayFor(model => model.Name) </dd>
+        <dt> @Html.DisplayNameFor(model => model.UsersNumber) </dt>
+        <dd> @Html.DisplayFor(model => model.UsersNumber) </dd>
+    </dl>
+</div>
+<div>
+    <a asp-action="AddUser" asp-route-id="@Model.Id"  class="btn btn-primary"><i class="fas fa-plus"></i> Agregar Usuario</a>
+    <a asp-action="Index" class="btn btn-secondary"><i class="fa-solid fa-arrow-left"></i> Atrás</a>
+</div>
+<hr />
+<div class="row">
+    <div class="col-md-12">
+        <div class="panel panel-default">
+            <div class="panel-heading"> <h3 class="panel-title">Usuarios</h3> </div> <div class="panel-body">
+                <table class="table table-hover table-responsive table-striped" id="MyTable">
+                    <thead> 
+                        <tr> 
+                            <th> Nombre </th> 
+                            <th> Cédula </th> 
+                            <th> Activo </th>
+                            <th> Cantidad de registros </th> 
+                            <th></th> 
+                        </tr> 
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model.Users)
+                        {
+                            <tr>
+                                <td> @Html.DisplayFor(modelItem => item.Name) </td>
+                                <td> @Html.DisplayFor(modelItem => item.Dni) </td>
+                                <td> @Html.DisplayFor(modelItem => item.Status) </td>
+                                <td> @Html.DisplayFor(modelItem => item.RegistriesNumber) </td>
+                                <td>
+                                    <a asp-action="EditUser" asp-route-id="@item.Id" class="btn btn-warning"><i class="fas fa-edit"></i></a> <a asp-action="DetailsUser" asp-route-id="@item.Id" class="btn btn-info"><i class="fas fa-align-justify"></i></a> <button data-id="@item.Id" class="btn btn-danger deleteItem" data-toggle="modal" data-target="#deleteDialog"><i class="fas fa-trash"></i></button>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+<partial name="_DeleteDialog" />
+@section Scripts {
+ @{
+    await Html.RenderPartialAsync("_ValidationScriptsPartial");
+} <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.js"></script> <script src="/js/deleteDialog.js"></script>
+<script type="text/javascript">
+
+     $(document).ready(function () { $('#MyTable').DataTable();
+    // Delete item
+    sc_deleteDialog.openModal('deleteItem', true, 'btnYesDelete', '/Roles/DeleteUser/', false); });
+</script>
+ }

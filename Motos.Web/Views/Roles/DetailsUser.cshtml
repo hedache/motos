@@ -1,0 +1,75 @@
+﻿@model Motos.Web.Models.User
+@{
+    ViewData["Title"] = "Details";
+}
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.11.5/css/jquery.dataTables.css">
+<link rel="stylesheet" href="~/lib/font-awesome/css/fontawesome.css" />
+<link rel="stylesheet" href="~/lib/Font-Awesome/css/regular.min.css">
+<link rel="stylesheet" href="~/lib/Font-Awesome/css/solid.min.css">
+@*<h2>Details</h2>*@
+<br />
+<div>
+    <h4><i class="fa-regular fa-info"></i> Detalle de Usuario</h4>
+    <hr /> 
+    <dl class="dl-horizontal">
+        <dt> Nombre </dt>
+        <dd> @Html.DisplayFor(model => model.Name) </dd>
+        <dt> Cédula </dt>
+        <dd> @Html.DisplayFor(model => model.Dni) </dd>
+        <dt> Activo </dt>
+        <dd> @Html.DisplayFor(model => model.Status) </dd>
+    </dl>
+</div>
+<div>
+    <a asp-action="AddRegistry" asp-route-id="@Model.Id" class="btn btn-primary"><i class="fas fa-plus"></i> Agregar Registro</a>
+    <a asp-action="Details" asp-route-id="@Model.IdRol" class="btn btn-secondary"><i class="fa-solid fa-arrow-left"></i> Atrás</a>
+</div>
+<br />
+<div class="row">
+    <div class="col-md-12">
+        <div class="panel panel-default">
+            <div class="panel-heading"> <h3 class="panel-title">Listado de registros</h3> </div> <div class="panel-body">
+                <table class="table table-hover table-responsive table-striped" id="MyTable">
+                    <thead> 
+                        <tr> 
+                            <th> Fecha </th> 
+                            <th> Cédula </th> 
+                            <th> Placa </th> 
+                            <th> Propietario </th> 
+                            <th> Descripción </th>
+                            <th></th> 
+                            </tr> 
+                        </thead>
+                    <tbody>
+                        @foreach (var item in Model.Registries)
+                        {
+                            <tr>
+                                <td> @Html.DisplayFor(modelItem => item.Date) </td>
+                                <td> @Html.DisplayFor(modelItem => item.Dni) </td>
+                                <td> @Html.DisplayFor(modelItem => item.Placa) </td>
+                                <td> @Html.DisplayFor(modelItem => item.Owner) </td>
+                                <td> @Html.DisplayFor(modelItem => item.Description) </td>
+                                <td>
+                                    <a asp-action="EditRegistry" asp-route-id="@item.Id" class="btn btn-warning"><i class="fas fa-edit"></i></a>
+                                    <button data-id="@item.Id" class="btn btn-danger deleteItem" data-toggle="modal" data-target="#deleteDialog"><i class="fas fa-trash"></i></button>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+<partial name="_DeleteDialog" />
+@section Scripts {
+ @{
+    await Html.RenderPartialAsync("_ValidationScriptsPartial");
+} <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.js"></script> <script src="/js/deleteDialog.js"></script>
+<script type="text/javascript">
+
+     $(document).ready(function () { $('#MyTable').DataTable();
+    // Delete item
+    sc_deleteDialog.openModal('deleteItem', true, 'btnYesDelete', '/Roles/DeleteRegistry/', false); });
+</script>
+ }

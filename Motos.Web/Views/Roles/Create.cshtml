@@ -1,0 +1,32 @@
+﻿@model Motos.Web.Models.Role
+
+@{
+    ViewData["Title"] = "Create";
+}
+
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.11.5/css/jquery.dataTables.css">
+<link rel="stylesheet" href="~/lib/font-awesome/css/fontawesome.css" />
+<link rel="stylesheet" href="~/lib/Font-Awesome/css/regular.min.css">
+<link rel="stylesheet" href="~/lib/Font-Awesome/css/solid.min.css">
+
+@*<h1>Create</h1>*@
+<br />
+<h4><i class="fa-regular fa-plus"></i> Creación de Rol</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Create">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <partial name="_Role"/>
+            <div class="form-group">
+                <input type="submit" value="Guardar" class="btn btn-success" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index" class="btn btn-secondary"><i class="fa-solid fa-arrow-left"></i> Atrás</a>
+</div>
+
