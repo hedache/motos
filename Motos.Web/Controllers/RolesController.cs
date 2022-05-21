@@ -11,6 +11,10 @@ using Motos.Web.Helpers;
 
 namespace Motos.Web.Controllers
 {
+    using Microsoft.AspNetCore.Authorization;
+
+    [Authorize(Roles = "Admin")]
+
     public class RolesController : Controller
     {
         private readonly ApplicationDbContext _context;
@@ -27,7 +31,7 @@ namespace Motos.Web.Controllers
         // GET: Roles
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Roles.Include(c => c.Users).ToListAsync());
+            return View(await _context.Positions.Include(c => c.Persons).ToListAsync());
         }
 
         // GET: Roles/Details/5
@@ -38,8 +42,8 @@ namespace Motos.Web.Controllers
                 return NotFound();
             }
 
-            var role = await _context.Roles
-                .Include(c => c.Users).ThenInclude(d => d.Registries)
+            var role = await _context.Positions
+                .Include(c => c.Persons).ThenInclude(d => d.Registries)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (role == null)
             {
@@ -60,7 +64,7 @@ namespace Motos.Web.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Name")] Role role)
+        public async Task<IActionResult> Create([Bind("Id,Name")] Position role)
         {
             if (ModelState.IsValid)
             {
@@ -108,7 +112,7 @@ namespace Motos.Web.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, Role role)
+        public async Task<IActionResult> Edit(int id, Position role)
         {
             if (id != role.Id) { return NotFound(); }
             if (ModelState.IsValid)
@@ -184,12 +188,12 @@ namespace Motos.Web.Controllers
         {
             if (id == null) { return NotFound(); }
 
-            Role role = await _context.Roles
-                .Include(c => c.Users)
+            Position position = await _context.Positions
+                .Include(c => c.Persons)
                 .ThenInclude(d => d.Registries)
                 .FirstOrDefaultAsync(m => m.Id == id);
-            if (role == null) { return NotFound(); }
-            _context.Roles.Remove(role);
+            if (position == null) { return NotFound(); }
+            _context.Positions.Remove(position);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
@@ -219,49 +223,49 @@ namespace Motos.Web.Controllers
         //    return _context.Roles.Any(e => e.Id == id);
         //}
 
-        public async Task<IActionResult> AddUser(int? id)
+        public async Task<IActionResult> AddPerson(int? id)
         {
             if (id == null) { return NotFound(); }
-            Role role = await _context.Roles.FindAsync(id); if (role == null) { return NotFound(); }
-            User model = new User { IdRol = role.Id }; return View(model);
+            Position role = await _context.Positions.FindAsync(id); if (role == null) { return NotFound(); }
+            Person model = new Person { IdRol = role.Id }; return View(model);
         }
 
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> AddUser(User user)
+        public async Task<IActionResult> AddPerson(Person person)
         {
             if (ModelState.IsValid)
             {
-                Role role = await _context.Roles.Include(c => c.Users).FirstOrDefaultAsync(c => c.Id == user.IdRol); if (role == null) { return NotFound(); }
+                Position role = await _context.Positions.Include(c => c.Persons).FirstOrDefaultAsync(c => c.Id == person.IdRol); if (role == null) { return NotFound(); }
                 try
                 {
-                    user.Id = 0; role.Users.Add(user); _context.Update(role); await _context.SaveChangesAsync();
+                    person.Id = 0; role.Persons.Add(person); _context.Update(role); await _context.SaveChangesAsync();
                     return RedirectToAction(nameof(Details), new { Id = role.Id });
                 }
                 catch (DbUpdateException dbUpdateException) { if (dbUpdateException.InnerException.Message.Contains("duplicate")) { ModelState.AddModelError(string.Empty, "There are a record with the same name."); } else { ModelState.AddModelError(string.Empty, dbUpdateException.InnerException.Message); } }
                 catch (Exception exception) { ModelState.AddModelError(string.Empty, exception.Message); }
             }
-            return View(user);
+            return View(person);
         }
 
-        public async Task<IActionResult> EditUser(int? id)
+        public async Task<IActionResult> EditPerson(int? id)
         {
             if (id == null) { return NotFound(); }
-            User user = await _context.Users.FindAsync(id); if (user == null) { return NotFound(); }
-            Role role = await _context.Roles.FirstOrDefaultAsync(c => c.Users.FirstOrDefault(d => d.Id == user.Id) != null); user.IdRol = role.Id; return View(user);
+            Person person = await _context.Persons.FindAsync(id); if (person == null) { return NotFound(); }
+            Position role = await _context.Positions.FirstOrDefaultAsync(c => c.Persons.FirstOrDefault(d => d.Id == person.Id) != null); person.IdRol = role.Id; return View(person);
         }
 
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> EditUser(User user)
+        public async Task<IActionResult> EditPerson(Person person)
         {
             if (ModelState.IsValid)
             {
                 try
                 {
-                    _context.Update(user); await _context.SaveChangesAsync(); return RedirectToAction(nameof(Details), new { Id = user.IdRol });
+                    _context.Update(person); await _context.SaveChangesAsync(); return RedirectToAction(nameof(Details), new { Id = person.IdRol });
                 }
                 catch (DbUpdateException dbUpdateException) { if (dbUpdateException.InnerException.Message.Contains("duplicate")) { ModelState.AddModelError(string.Empty, "There are a record with the same name."); } else { ModelState.AddModelError(string.Empty, dbUpdateException.InnerException.Message); } }
                 catch (Exception exception)
@@ -270,23 +274,23 @@ namespace Motos.Web.Controllers
                     ModelState.AddModelError(string.Empty, exception.Message);
                 }
             }
-            return View(user);
+            return View(person);
         }
 
 
 
-        public async Task<IActionResult> DeleteUser(int? id)
+        public async Task<IActionResult> DeletePerson(int? id)
         {
             if (id == null) { return NotFound(); }
-            User user = await _context.Users.Include(d => d.Registries).FirstOrDefaultAsync(m => m.Id == id); if (user == null) { return NotFound(); }
-            Role role = await _context.Roles.FirstOrDefaultAsync(c => c.Users.FirstOrDefault(d => d.Id == user.Id) != null); _context.Users.Remove(user); await _context.SaveChangesAsync(); return RedirectToAction(nameof(Details), new { Id = role.Id });
+            Person person = await _context.Persons.Include(d => d.Registries).FirstOrDefaultAsync(m => m.Id == id); if (person == null) { return NotFound(); }
+            Position role = await _context.Positions.FirstOrDefaultAsync(c => c.Persons.FirstOrDefault(d => d.Id == person.Id) != null); _context.Persons.Remove(person); await _context.SaveChangesAsync(); return RedirectToAction(nameof(Details), new { Id = role.Id });
         }
 
-        public async Task<IActionResult> DetailsUser(int? id)
+        public async Task<IActionResult> DetailsPerson(int? id)
         {
             if (id == null) { return NotFound(); }
-            User user = await _context.Users.Include(d => d.Registries).FirstOrDefaultAsync(m => m.Id == id); if (user == null) { return NotFound(); }
-            Role role = await _context.Roles.FirstOrDefaultAsync(c => c.Users.FirstOrDefault(d => d.Id == user.Id) != null); user.IdRol = role.Id; return View(user);
+            Person person = await _context.Persons.Include(d => d.Registries).FirstOrDefaultAsync(m => m.Id == id); if (person == null) { return NotFound(); }
+            Position role = await _context.Positions.FirstOrDefaultAsync(c => c.Persons.FirstOrDefault(d => d.Id == person.Id) != null); person.IdRol = role.Id; return View(person);
         }
 
 
@@ -296,8 +300,8 @@ namespace Motos.Web.Controllers
         public async Task<IActionResult> AddRegistry(int? id)
         {
             if (id == null) { return NotFound(); }
-            User user = await _context.Users.FindAsync(id); if (user == null) { return NotFound(); }
-            Registry model = new Registry { IdUser = user.Id }; return View(model);
+            Person person = await _context.Persons.FindAsync(id); if (person == null) { return NotFound(); }
+            Registry model = new Registry { IdUser = person.Id }; return View(model);
             //UserViewModel model = new UserViewModel();
             //return View(model);
 
@@ -314,10 +318,10 @@ namespace Motos.Web.Controllers
             //registry.Costx = cosa;
             if (ModelState.IsValid)
             {
-                User user = await _context.Users.Include(d => d.Registries).FirstOrDefaultAsync(c => c.Id == registry.IdUser); if (user == null) { return NotFound(); }
+                Person person = await _context.Persons.Include(d => d.Registries).FirstOrDefaultAsync(c => c.Id == registry.IdUser); if (person == null) { return NotFound(); }
                 try
                 {
-                    registry.Id = 0; user.Registries.Add(registry); _context.Update(user); await _context.SaveChangesAsync(); return RedirectToAction(nameof(DetailsUser), new { Id = user.Id });
+                    registry.Id = 0; person.Registries.Add(registry); _context.Update(person); await _context.SaveChangesAsync(); return RedirectToAction(nameof(DetailsPerson), new { Id = person.Id });
                 }
                 catch (DbUpdateException dbUpdateException) { if (dbUpdateException.InnerException.Message.Contains("duplicate")) { ModelState.AddModelError(string.Empty, "There are a record with the same name."); } else { ModelState.AddModelError(string.Empty, dbUpdateException.InnerException.Message); } }
                 catch (Exception exception) { ModelState.AddModelError(string.Empty, exception.Message); }
@@ -379,7 +383,7 @@ namespace Motos.Web.Controllers
     {
         if (id == null) { return NotFound(); }
         Registry registry = await _context.Registries.FindAsync(id); if (registry == null) { return NotFound(); }
-        User user = await _context.Users.FirstOrDefaultAsync(d => d.Registries.FirstOrDefault(c => c.Id == registry.Id) != null); registry.IdUser = user.Id; return View(registry);
+        Person person = await _context.Persons.FirstOrDefaultAsync(d => d.Registries.FirstOrDefault(c => c.Id == registry.Id) != null); registry.IdUser = person.Id; return View(registry);
     }
 
 
@@ -388,7 +392,7 @@ namespace Motos.Web.Controllers
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> EditRegistry(Registry registry)
     {
-        if (ModelState.IsValid) { try { _context.Update(registry); await _context.SaveChangesAsync(); return RedirectToAction(nameof(DetailsUser), new { Id = registry.IdUser }); } catch (DbUpdateException dbUpdateException) { if (dbUpdateException.InnerException.Message.Contains("duplicate")) { ModelState.AddModelError(string.Empty, "There are a record with the same name."); } else { ModelState.AddModelError(string.Empty, dbUpdateException.InnerException.Message); } } catch (Exception exception) { ModelState.AddModelError(string.Empty, exception.Message); } }
+        if (ModelState.IsValid) { try { _context.Update(registry); await _context.SaveChangesAsync(); return RedirectToAction(nameof(DetailsPerson), new { Id = registry.IdUser }); } catch (DbUpdateException dbUpdateException) { if (dbUpdateException.InnerException.Message.Contains("duplicate")) { ModelState.AddModelError(string.Empty, "There are a record with the same name."); } else { ModelState.AddModelError(string.Empty, dbUpdateException.InnerException.Message); } } catch (Exception exception) { ModelState.AddModelError(string.Empty, exception.Message); } }
         return View(registry);
 
     }
@@ -399,8 +403,8 @@ namespace Motos.Web.Controllers
     {
         if (id == null) { return NotFound(); }
         Registry registry = await _context.Registries.FirstOrDefaultAsync(m => m.Id == id); if (registry == null) { return NotFound(); }
-        User user = await _context.Users.FirstOrDefaultAsync(d => d.Registries.FirstOrDefault(c => c.Id == registry.Id) != null); _context.Registries.Remove(registry); await _context.SaveChangesAsync();
-        return RedirectToAction(nameof(DetailsUser), new { Id = user.Id });
+        Person person = await _context.Persons.FirstOrDefaultAsync(d => d.Registries.FirstOrDefault(c => c.Id == registry.Id) != null); _context.Registries.Remove(registry); await _context.SaveChangesAsync();
+        return RedirectToAction(nameof(DetailsPerson), new { Id = person.Id });
     }
 
 

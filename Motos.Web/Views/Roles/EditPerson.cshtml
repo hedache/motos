@@ -1,4 +1,4 @@
-﻿@model Motos.Web.Models.User
+﻿@model Motos.Web.Models.Person
 @{
     ViewData["Title"] = "Edit";
 }
@@ -14,9 +14,9 @@
 <hr />
 <div class="row">
     <div class="col-md-4">
-        <form asp-action="EditUser">
+        <form asp-action="EditPerson">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div> <input type="hidden" asp-for="Id" /> <input type="hidden" asp-for="IdRol" />
-            <partial name="_User" />
+            <partial name="_Person" />
             <div class="form-group"> <input type="submit" value="Guardar" class="btn btn-success" /> <a asp-action="Details" asp-route-id="@Model.IdRol" class="btn btn-secondary"><i class="fa-solid fa-arrow-left"></i> Atrás</a>
         </form>
     </div>

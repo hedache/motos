@@ -1,4 +1,4 @@
-﻿@model IEnumerable<Motos.Web.Models.Role>
+﻿@model IEnumerable<Motos.Web.Models.Position>
 
 @{
     ViewData["Title"] = "Index";
@@ -53,7 +53,7 @@
                                 Nombre
                             </th>
                             <th>
-                                @Html.DisplayNameFor(model => model.UsersNumber)
+                                @Html.DisplayNameFor(model => model.PersonsNumber)
                             </th>
                             <th></th>
                         </tr>
@@ -63,7 +63,7 @@
                         {
                             <tr>
                                 <td> @Html.DisplayFor(modelItem => item.Name) </td>
-                                <td> @Html.DisplayFor(modelItem => item.UsersNumber) </td>
+                                <td> @Html.DisplayFor(modelItem => item.PersonsNumber) </td>
                                 <td> <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-warning"><i class="fas fa-edit"></i></a> <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-info"><i class="fas fa-align-justify"></i></a> <button data-id="@item.Id" class="btn btn-danger deleteItem" data-toggle="modal" data-target="#deleteDialog"><i class="fas fa-trash"></i></button> </td>
                                 @*<td> <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-warning"><i class="fas fa-edit"></i></a> <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-info"><i class="fas fa-align-justify"></i></a> <button data-id="@item.Id" class="btn btn-danger deleteItem" data-toggle="modal" data-target="#deleteDialog"><i class="fas fa-trash"></i></button>*@
                             </tr>

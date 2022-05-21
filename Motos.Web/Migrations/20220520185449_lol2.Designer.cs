@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Motos.Web.Data;
 
@@ -11,9 +12,10 @@ using Motos.Web.Data;
 namespace Motos.Web.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20220520185449_lol2")]
+    partial class lol2
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -179,39 +181,6 @@ namespace Motos.Web.Migrations
                     b.ToTable("Categories");
                 });
 
-            modelBuilder.Entity("Motos.Web.Models.Order", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
-
-                    b.Property<DateTime>("Date")
-                        .HasColumnType("datetime2");
-
-                    b.Property<DateTime?>("DateConfirmed")
-                        .HasColumnType("datetime2");
-
-                    b.Property<DateTime?>("DateSent")
-                        .HasColumnType("datetime2");
-
-                    b.Property<int>("OrderStatus")
-                        .HasColumnType("int");
-
-                    b.Property<string>("Remarks")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("UserId")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("UserId");
-
-                    b.ToTable("Orders");
-                });
-
             modelBuilder.Entity("Motos.Web.Models.Person", b =>
                 {
                     b.Property<int>("Id")
@@ -375,38 +344,6 @@ namespace Motos.Web.Migrations
                     b.ToTable("ServicesImages");
                 });
 
-            modelBuilder.Entity("OrderDetail", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
-
-                    b.Property<int?>("OrderId")
-                        .HasColumnType("int");
-
-                    b.Property<decimal>("Price")
-                        .HasColumnType("decimal(18,2)");
-
-                    b.Property<float>("Quantity")
-                        .HasColumnType("real");
-
-                    b.Property<string>("Remarks")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int?>("ServiceId")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("OrderId");
-
-                    b.HasIndex("ServiceId");
-
-                    b.ToTable("OrderDetails");
-                });
-
             modelBuilder.Entity("User", b =>
                 {
                     b.Property<string>("Id")
@@ -554,15 +491,6 @@ namespace Motos.Web.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("Motos.Web.Models.Order", b =>
-                {
-                    b.HasOne("User", "User")
-                        .WithMany()
-                        .HasForeignKey("UserId");
-
-                    b.Navigation("User");
-                });
-
             modelBuilder.Entity("Motos.Web.Models.Person", b =>
                 {
                     b.HasOne("Motos.Web.Models.Position", null)
@@ -593,19 +521,6 @@ namespace Motos.Web.Migrations
                         .HasForeignKey("ServiceId");
                 });
 
-            modelBuilder.Entity("OrderDetail", b =>
-                {
-                    b.HasOne("Motos.Web.Models.Order", null)
-                        .WithMany("OrderDetails")
-                        .HasForeignKey("OrderId");
-
-                    b.HasOne("Motos.Web.Models.Service", "Service")
-                        .WithMany()
-                        .HasForeignKey("ServiceId");
-
-                    b.Navigation("Service");
-                });
-
             modelBuilder.Entity("User", b =>
                 {
                     b.HasOne("Motos.Web.Models.Registry", "Registry")
@@ -613,11 +528,6 @@ namespace Motos.Web.Migrations
                         .HasForeignKey("RegistryId");
 
                     b.Navigation("Registry");
-                });
-
-            modelBuilder.Entity("Motos.Web.Models.Order", b =>
-                {
-                    b.Navigation("OrderDetails");
                 });
 
             modelBuilder.Entity("Motos.Web.Models.Person", b =>

@@ -7,7 +7,7 @@ using System.Text.Json.Serialization;
 
 namespace Motos.Web.Models
 {
-    public class User
+    public class Person
     {
         public int Id { get; set; }
         [Required]
@@ -21,7 +21,7 @@ namespace Motos.Web.Models
         //[Display(Name = "Image")] public Guid ImageId { get; set; }
         ////TODO: Pending to put the correct paths
         //[Display(Name = "Image")] 
-        //public string ImageFullPath => ImageId == Guid.Empty ? "$https://localhost:44390/images/user.png" : $"https://tiendaonline.Web.blob.core.windows.net/categories/{ImageId}";
+        //public string ImageFullPath => ImageId == Guid.Empty ? "$https://motos.blob.core.windows.net/images/user.png" : $"https://tiendaonline.Web.blob.core.windows.net/categories/{ImageId}";
         public ICollection<Registry> Registries { get; set; }
         [DisplayName("Registries Number")]
         public int RegistriesNumber => Registries == null ? 0 : Registries.Count;

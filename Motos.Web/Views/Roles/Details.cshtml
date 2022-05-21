@@ -1,4 +1,4 @@
-﻿@model Motos.Web.Models.Role
+﻿@model Motos.Web.Models.Position
 
 @{
     ViewData["Title"] = "Details";
@@ -21,12 +21,12 @@
 <dl>
         <dt> Nombre </dt>
         <dd> @Html.DisplayFor(model => model.Name) </dd>
-        <dt> @Html.DisplayNameFor(model => model.UsersNumber) </dt>
-        <dd> @Html.DisplayFor(model => model.UsersNumber) </dd>
+        <dt> @Html.DisplayNameFor(model => model.PersonsNumber) </dt>
+        <dd> @Html.DisplayFor(model => model.PersonsNumber) </dd>
     </dl>
 </div>
 <div>
-    <a asp-action="AddUser" asp-route-id="@Model.Id"  class="btn btn-primary"><i class="fas fa-plus"></i> Agregar Usuario</a>
+    <a asp-action="AddPerson" asp-route-id="@Model.Id"  class="btn btn-primary"><i class="fas fa-plus"></i> Agregar Usuario</a>
     <a asp-action="Index" class="btn btn-secondary"><i class="fa-solid fa-arrow-left"></i> Atrás</a>
 </div>
 <hr />
@@ -45,7 +45,7 @@
                         </tr> 
                     </thead>
                     <tbody>
-                        @foreach (var item in Model.Users)
+                        @foreach (var item in Model.Persons)
                         {
                             <tr>
                                 <td> @Html.DisplayFor(modelItem => item.Name) </td>
@@ -53,7 +53,7 @@
                                 <td> @Html.DisplayFor(modelItem => item.Status) </td>
                                 <td> @Html.DisplayFor(modelItem => item.RegistriesNumber) </td>
                                 <td>
-                                    <a asp-action="EditUser" asp-route-id="@item.Id" class="btn btn-warning"><i class="fas fa-edit"></i></a> <a asp-action="DetailsUser" asp-route-id="@item.Id" class="btn btn-info"><i class="fas fa-align-justify"></i></a> <button data-id="@item.Id" class="btn btn-danger deleteItem" data-toggle="modal" data-target="#deleteDialog"><i class="fas fa-trash"></i></button>
+                                    <a asp-action="EditPerson" asp-route-id="@item.Id" class="btn btn-warning"><i class="fas fa-edit"></i></a> <a asp-action="DetailsPerson" asp-route-id="@item.Id" class="btn btn-info"><i class="fas fa-align-justify"></i></a> <button data-id="@item.Id" class="btn btn-danger deleteItem" data-toggle="modal" data-target="#deleteDialog"><i class="fas fa-trash"></i></button>
                                 </td>
                             </tr>
                         }
@@ -72,6 +72,6 @@
 
      $(document).ready(function () { $('#MyTable').DataTable();
     // Delete item
-    sc_deleteDialog.openModal('deleteItem', true, 'btnYesDelete', '/Roles/DeleteUser/', false); });
+    sc_deleteDialog.openModal('deleteItem', true, 'btnYesDelete', '/Roles/DeletePerson/', false); });
 </script>
  }

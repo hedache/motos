@@ -3,9 +3,13 @@ using System.ComponentModel.DataAnnotations;
 
 namespace Motos.Web.Models
 {
-    public class UserViewModel: Person
+    public class AddServiceImageViewModel
     {
-        [Display(Name = "Image")] 
+        public int ServiceId { get; set; }
+
+        [Display(Name = "Image")]
+        [Required]
         public IFormFile ImageFile { get; set; }
+
     }
 }

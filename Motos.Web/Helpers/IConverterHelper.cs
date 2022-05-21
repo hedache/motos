@@ -1,12 +1,16 @@
-﻿using Motos.Web.Models;
-using System;
+﻿using System;
+using System.Threading.Tasks;
+using Motos.Web.Models;
+
 namespace Motos.Web.Helpers
 {
     public interface IConverterHelper
     {
-        User ToUser(UserViewModel model, Guid imageId, bool isNew);
+        Category ToCategory(CategoryViewModel model, Guid imageId, bool isNew);
 
-        UserViewModel ToUserViewModel(User user);
+        CategoryViewModel ToCategoryViewModel(Category category);
+        Task<Service> ToServiceAsync(ServiceViewModel model, bool isNew);
 
+        ServiceViewModel ToServiceViewModel(Service service);
     }
 }

@@ -4,16 +4,16 @@ using System.ComponentModel.DataAnnotations;
 
 namespace Motos.Web.Models
 {
-    public class Role
+    public class Position
     {
         public int Id { get; set; }
         [Required]
         [MaxLength(30, ErrorMessage ="El campo {0} debe contener al menos un caracter")]
         public string Name { get; set; }
 
-        public ICollection<User> Users { get; set; }
+        public ICollection<Person> Persons { get; set; }
 
         [DisplayName("Cantidad de usuarios")]
-        public int UsersNumber => Users == null ? 0 : Users.Count;
+        public int PersonsNumber => Persons == null ? 0 : Persons.Count;
     }
 }
