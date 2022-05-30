@@ -1,5 +1,7 @@
 ﻿using Microsoft.AspNetCore.Identity;
+using Motos.Web.Enums;
 using Motos.Web.Models;
+using System;
 using System.Threading.Tasks;
 
 public interface IUserHelper
@@ -17,5 +19,16 @@ public interface IUserHelper
 
     Task LogoutAsync();
     Task<SignInResult> ValidatePasswordAsync(User user, string password);
+    Task<User> AddUserAsync(AddUserViewModel model, Guid imageId, UserType userType);
+    Task<IdentityResult> ChangePasswordAsync(User user, string oldPassword, string newPassword);
+
+    Task<IdentityResult> UpdateUserAsync(User user);
+
+    Task<User> GetUserAsync(Guid userId);
+    Task<string> GenerateEmailConfirmationTokenAsync(User user);
+
+    Task<IdentityResult> ConfirmEmailAsync(User user, string token);
+
+
 
 }

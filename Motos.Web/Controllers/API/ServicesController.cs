@@ -22,7 +22,7 @@ namespace Motos.Web.Controllers.API
         }
 
         [HttpGet]
-        public IActionResult GetProducts()
+        public IActionResult GetServices()
         {
             return Ok(_context.Services
                 .Include(p => p.Category)

@@ -28,6 +28,12 @@ namespace Motos.Web.Data
             modelBuilder.Entity<Position>()
                 .HasIndex(t => t.Name)
                 .IsUnique();
+            //modelBuilder.Entity<Position>(cou =>
+            //{
+            //    cou.HasIndex("Name").IsUnique();
+            //    cou.HasMany(c => c.Persons).WithOne(d => d.Position).OnDelete(DeleteBehavior.Cascade);
+            //});
+
 
             modelBuilder.Entity<Person>()
                 .HasIndex(t => t.Name)

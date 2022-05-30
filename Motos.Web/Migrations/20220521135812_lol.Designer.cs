@@ -12,7 +12,7 @@ using Motos.Web.Data;
 namespace Motos.Web.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20220521005622_lol")]
+    [Migration("20220521135812_lol")]
     partial class lol
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)

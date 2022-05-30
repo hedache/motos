@@ -8,9 +8,9 @@ using System;
 
 namespace Motos.Web.Controllers
 {
-    //using Microsoft.AspNetCore.Authorization;
+    using Microsoft.AspNetCore.Authorization;
 
-    //[Authorize(Roles = "Admin")]
+    [Authorize(Roles = "Admin")]
 
     public class CategoriesController : Controller
     {
